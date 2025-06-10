@@ -1,16 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actualizar Power BI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      outline-width: 1px;
+      outline-offset: 0;
+      outline-color: rgba(17, 83, 8, 0.541);
+      outline-style: solid;
+      animation: animateOutline 2s ease infinite;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+
+    @keyframes animateOutline {
+      0%{
+        outline-width: 1px;
+        outline-offset: 0;
+        outline-color: rgb(19, 105, 8);
+      }
+
+      10%{
+        outline-color: rgba(29, 177, 9, 0.719);
+      }
+
+      50%{
+        outline-width: 7px;
+        outline-offset: 4px;
+        outline-color: rgba(28, 175, 8, 0.384);
+
+      }
+
+      80%{
+        outline-width: 7px;
+        outline-offset: 4px;
+        outline-color: rgba(28, 175, 8, 0.233);
+      }
+
+      100%{
+        outline-width: 1px;
+        outline-offset: 4px;
+        outline-color: rgba(12, 61, 6, 0.027);
+
+      }
+    }
+
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #mensaje {
+
+      margin-top: 20px;
+      font-size: 16px;
+      color: #155724;
+      display: none;
+    }
+  </style>
+</head>
 <body>
 
-<button onclick="actualizarPowerBI()">Actualizar BI</button>
+  <div class="card">
+    <h1>Actualizar Power BI</h1>
+    <button onclick="actualizar()">Actualizar</button>
+    <div id="mensaje">✅ El proceso de actualización se inició con éxito.</div>
+  </div>
 
-<script>
-function actualizarPowerBI() {
-    fetch('https://prod-19.brazilsouth.logic.azure.com:443/workflows/e9127e16c9554f30b3dfcf54e185f01c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kb7dDQFw526wiOMkgqb4rpexQuSJa-J1dN6OF_oibHI', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
-    })
-    .then(response => {
+  <script>
+    function actualizar() {
+      fetch('https://prod-19.brazilsouth.logic.azure.com:443/workflows/e9127e16c9554f30b3dfcf54e185f01c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kb7dDQFw526wiOMkgqb4rpexQuSJa-J1dN6OF_oibHI', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({}) // Agrega datos si tu flujo los requiere
+      })  .then(response => {
         if (response.ok) {
             mostrarNotificacion("Actualización completada ✅");
         } else {
@@ -20,7 +121,10 @@ function actualizarPowerBI() {
     .catch(error => {
         mostrarNotificacion("Error en la solicitud ❌");
     });
-}
+      .catch(error => {
+        alert('Error de red: ' + error.message);
+      });
+    }
 
 function mostrarNotificacion(mensaje) {
     let notificacion = document.createElement("div");
@@ -38,7 +142,10 @@ function mostrarNotificacion(mensaje) {
     document.body.appendChild(notificacion);
     setTimeout(() => { notificacion.remove(); }, 3000); // La notificación desaparece en 3 segundos
 }
-</script>
+  </script>
+
+</body>
+</html>
 
 
 </body>
